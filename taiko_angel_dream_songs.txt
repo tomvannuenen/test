@@ -1,0 +1,129 @@
+==========================================================================================
+Taiko no Tatsujin Songs — 'Angel' / 'Dream' Filter (added >= 2016-01-01)
+Source: taikowiki/taiko-song-database  |  Generated: 2026-03-04 02:42 UTC
+Total matches: 22  (angel: 6, dream: 19, both: 3)
+==========================================================================================
+
+[  1] トライ・エヴリシング
+      Added: 2016-08-03  |  Match: dream  |  Deleted: yes
+      Artists: Dream Ami / Mikkel S. Eriksen
+      Genre: anime  |  Versions: NAC, NS2, NS1, PS4
+
+[  2] エンジェル ドリーム(デレマス)
+      Added: 2017-04-26  |  Match: angel, dream  |  Deleted: no
+      Artists: 岡部啓一 / 緒方智絵里、城ヶ崎莉嘉、多田李衣菜
+      Genre: game, anime  |  Versions: NAC
+
+[  3] あなたとトゥラッタッタ♪
+      Added: 2019-04-25  |  Match: dream  |  Deleted: no
+      Romaji: Anata to Tu-lat-lat-ta♪
+      Artists: 吉田美和・中村正人 / DREAMS COME TRUE
+      Genre: pops  |  Versions: NAC, NS1, PS4, PLUS, RC
+
+[  4] Fun!Fun!Fun! ～夢∞～
+      Added: 2021-12-15  |  Match: dream  |  Deleted: yes
+      Romaji: Fun!Fun!Fun! ~Yume Mugendai~
+      Artists: 浦島健太・野口大志 / Lucky²
+      Genre: kids  |  Versions: NAC
+
+[  5] Re：End of a Dream
+      Added: 2023-05-20  |  Match: dream  |  Deleted: no
+      Artists: uma vs. モリモリあつし
+      Genre: variety  |  Versions: NAC
+
+[  6] エンジェル ドリーム(にじさんじ)
+      Added: 2024-04-25  |  Match: angel, dream  |  Deleted: no
+      Artists: 岡部啓一 / フレン・E・ルスタリオ
+      Genre: namco  |  Versions: NAC, NS2
+
+[  7] LIMIT BREAK DREAMERS
+      Added: 2025-06-04  |  Match: dream  |  Deleted: no
+      Artists: Special for Princess! / エス / カンナ / ユメ / ライカ / 白戸佑輔
+      Genre: game  |  Versions: NAC
+
+[  8] 愛♡スクリ～ム！
+      Added: 2025-07-30  |  Match: dream  |  Deleted: no
+      Artists: AiScReam / 黒澤ルビィ / 上原歩夢 / 若菜四季 / DJ Chika a.k.a. INHERIT / Hayato Yamamoto
+      Genre: pops, anime  |  Versions: NAC, NS2
+
+[  9] Angelic Angel
+      Added: ?  |  Match: angel  |  Deleted: no
+      Artists: 森慎太郎 / μ's
+      Genre: anime  |  Versions: NAC
+
+[ 10] DREAMERS' PARADISE
+      Added: ?  |  Match: dream  |  Deleted: no
+      Artists: T.Kura、michico / DANCE EARTH PARTY
+      Genre: pops  |  Versions: NAC
+
+[ 11] Fallen Angel
+      Added: ?  |  Match: angel  |  Deleted: no
+      Artists: 濱本理央 / ZOLA Project
+      Genre: vocaloid  |  Versions: NAC
+
+[ 12] ようかい体操第一
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Yokai Taisou Dai Ichi
+      Artists: 菊谷知樹 / Dream5
+      Genre: kids, anime  |  Versions: NAC
+
+[ 13] エンジェル ドリーム
+      Added: ?  |  Match: angel, dream  |  Deleted: no
+      Romaji: Angel Dream
+      Artists: 岡部啓一
+      Genre: namco  |  Versions: NAC
+
+[ 14] ダン・ダン ドゥビ・ズバー！
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Dan Dan Doobie Zubah!
+      Artists: 菊谷知樹 / Dream5+ブリー隊長
+      Genre: kids, anime  |  Versions: NAC
+
+[ 15] ドローイン☆ドリーム！
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Drawin'☆Dream!
+      Artists: Versus / 白黒黒白
+      Genre: namco  |  Versions: NAC
+
+[ 16] 夢うつつカタルシス
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Yumeutstsu Catharsis
+      Artists: 大木奏弥 / 愛原圭織
+      Genre: namco  |  Versions: NAC
+
+[ 17] 夢と希望
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Hopes and Dreams
+      Artists: Toby Fox
+      Genre: game  |  Versions: NAC, NS2, NS1
+
+[ 18] 夢と現実の境界線
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Yume to Genjitsu no Kyoukaisen
+      Artists: OMOCHI
+      Genre: namco  |  Versions: NAC
+
+[ 19] 星のカービィメドレー  (Kirby Medley)
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Kirby's Dream Land Medley
+      Artists: 石川淳 / 安藤浩和
+      Genre: game, kids  |  Versions: NAC, NS2, NS1
+
+[ 20] 猫サンキュー
+      Added: ?  |  Match: angel  |  Deleted: no
+      Romaji: Neko Thank You
+      Artists: 夕闇に誘いし漆黒の天使達
+      Genre: pops  |  Versions: NAC
+
+[ 21] 白日夢、霧雨に溶けて
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Hakujitsumu, Kirisame ni Tokete
+      Artists: 後藤 / ぜりょわん
+      Genre: namco  |  Versions: NAC
+
+[ 22] 華蕾夢ミル狂詩曲～魂ノ導～
+      Added: ?  |  Match: dream  |  Deleted: no
+      Romaji: Tsubomi Yumemiru Rapsodia ~Alma no Michibiki~
+      Artists: 浩川卿中二・淵ヶ谷増二 / 神崎蘭子
+      Genre: game, anime  |  Versions: NAC
+
