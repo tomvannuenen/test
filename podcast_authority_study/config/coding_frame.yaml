@@ -1,0 +1,88 @@
+# =============================================================================
+# LLM Coding Frame for Stage 5 Analysis
+# =============================================================================
+# Derived from:
+#   - Dowling & Miller 2022 (metajournalistic discourse, legitimacy)
+#   - Vaarala 2025 (epistemic authority construction)
+#   - Bozzi 2025 (comedy, infrastructure, identity)
+#   - Rae 2023 (intimacy, voice, para-social trust)
+#   - Lewis 2018 (alternative influence, reactionary broadcasting)
+# =============================================================================
+
+coding_dimensions:
+
+  self_positioning:
+    description: "How the host presents their own identity and role"
+    codes:
+      - comedian: "Frames self as comedian, entertainer, 'just joking'"
+      - outsider: "Positions self as outside the establishment, mainstream, elite circles"
+      - truth_teller: "Claims to speak uncomfortable truths others won't say"
+      - journalist: "Claims or implies journalistic function (reporting, investigating)"
+      - regular_guy: "Presents as ordinary person, everyman, 'just like you'"
+      - expert_by_experience: "Claims expertise through lived experience, not credentials"
+      - intellectual: "Positions self as thinker, debater, ideas person"
+      - entrepreneur: "Frames authority through business success, self-made narrative"
+      - persecuted_voice: "Frames self as silenced, cancelled, targeted for speaking truth"
+
+  enemy_construction:
+    description: "Who or what is identified as the hostile power structure"
+    codes:
+      - mainstream_media: "Legacy media, journalists, corporate press"
+      - government: "State actors, politicians, agencies, 'the regime'"
+      - universities: "Academia, professors, 'ivory tower', credentialed experts"
+      - big_tech: "Social media companies, Silicon Valley, censorship infrastructure"
+      - cultural_left: "Progressives, 'woke', feminists, DEI, identity politics"
+      - globalist_elites: "WEF, Davos, billionaires, 'globalists', shadowy networks"
+      - medical_establishment: "Big pharma, CDC, WHO, public health authorities"
+      - entertainment_industry: "Hollywood, legacy entertainment, cultural gatekeepers"
+      - deep_state: "Intelligence agencies, unelected bureaucrats, permanent government"
+
+  epistemic_style:
+    description: "How claims are made and knowledge is performed"
+    codes:
+      - just_asking_questions: "Poses claims as innocent questions, speculative wondering"
+      - joking_not_joking: "Makes serious claims wrapped in humor, deniable assertion"
+      - anecdote: "Uses personal stories or second-hand accounts as evidence"
+      - debate: "Frames interaction as intellectual contest, 'facts and logic'"
+      - confession: "Intimate disclosure, vulnerability, parasocial honesty"
+      - common_sense: "Appeals to what 'everyone knows' or 'obvious' truths"
+      - document_citing: "References specific documents, studies, screenshots as proof"
+      - guest_authority: "Borrows credibility from guest expertise or fame"
+      - contrarian_inversion: "Takes the opposite of mainstream position as default"
+
+  power_model:
+    description: "How power is conceptualized and narrated"
+    codes:
+      - top_down_control: "Elite cabal controlling society from above"
+      - censorship: "Suppression of speech, deplatforming, silencing dissent"
+      - institutional_capture: "Institutions corrupted from within by ideologues"
+      - cultural_domination: "Power exercised through culture, media, education"
+      - corruption: "Financial or moral corruption of leaders and institutions"
+      - persecution_of_ordinary: "Ordinary people targeted, marginalized, ignored"
+      - masculinity_crisis: "Emasculation, attack on traditional gender roles"
+      - manufactured_consent: "Population manipulated through propaganda, narrative control"
+      - techno_surveillance: "Digital control, social credit, algorithmic manipulation"
+
+  authorization_move:
+    description: "What gives the host the right to make claims about truth/reality"
+    codes:
+      - lived_experience: "Authority from personal history, 'I've been there'"
+      - honesty: "Authority from willingness to say what others won't"
+      - platform_independence: "Authority from being unbeholden to corporate/institutional masters"
+      - guest_access: "Authority from attracting important/credible guests"
+      - audience_mandate: "Authority from audience size, 'the people chose me'"
+      - masculine_realism: "Authority from toughness, refusing sentimentality"
+      - entrepreneurial_success: "Authority from business achievements, self-made status"
+      - persecution_survival: "Authority from having been attacked and surviving"
+      - intellectual_rigor: "Authority from reading, debating, engaging ideas seriously"
+      - common_man_wisdom: "Authority from being uncontaminated by elite training"
+
+# Instructions for LLM coders:
+# For each transcript segment (~5 min window), identify:
+#   1. Which self_positioning codes are present (can be multiple)
+#   2. Which enemy_construction codes are present (can be multiple)
+#   3. The dominant epistemic_style (1-2 codes)
+#   4. Any power_model codes present
+#   5. Any authorization_move codes present
+#   6. A brief free-text summary of the authority claim being made
+#   7. Confidence score (1-5) for the overall coding

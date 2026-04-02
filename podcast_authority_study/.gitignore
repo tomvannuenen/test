@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+data/audio_cache/
+data/transcripts/TEST_*
+data/segments/TEST_*
+.env

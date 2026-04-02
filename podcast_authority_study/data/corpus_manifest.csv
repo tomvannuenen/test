@@ -1,0 +1,23 @@
+name,youtube_channel_id,persona_type,subscriber_estimate,actual_subscriber_count,total_video_count,uploads_playlist_id,channel_title,api_status,justification,platform_note
+Joe Rogan,UCzQUP1qoWDoEbmsQxvdjxgQ,comedian_generalist,18000000,18000000,,,,skipped,"Central node in alternative influence network. Subject of Bozzi 2025, Rae 2023.",Primary distribution is Spotify; YouTube clips channel. Full episodes on YouTube resumed 2024.
+Theo Von,UC5AQEUAwCh1sGDvkQobt1gw,comedian_generalist,4500000,4500000,,,,skipped,Comedy-first podcast increasingly featuring political guests. Rogan network adjacent.,
+Andrew Schulz,UCjYO25ZVJT523TD1iYHzcbQ,comedian_generalist,3500000,3500000,,,,skipped,"Flagrant podcast, comedy-driven but covers political/cultural topics with anti-establishment framing.",
+Ben Shapiro,UCnQC_G5Xsjhp9fEJKuIcrSw,political_commentator,6500000,6500000,,,,skipped,Core case in Dowling & Miller 2022. Daily Wire ecosystem anchor.,
+Dan Bongino,UCL-UKVdDkCJfUMDMb_H8tFQ,political_commentator,3500000,3500000,,,,skipped,"Core case in Dowling & Miller 2022. Former law enforcement, anti-media framing.",
+Matt Walsh,UCnQC_G5Xsjhp9fEJKuIcrSw,political_commentator,0,0,,,,skipped,"Prominent culture-war commentator, documentary producer (What Is a Woman?).",Uses Daily Wire channel; filter by host name in title/description.
+Steven Crowder,UCIveFvW-ARp_B_RckhKnfAg,political_commentator,6000000,6000000,,,,skipped,"Louder with Crowder. Confrontational style, comedy-debate hybrid, deplatforming history.",
+Charlie Kirk,UCea59ys1mp38G1CdHIf2Z_A,political_commentator,3000000,3000000,,,,skipped,"Turning Point USA. Campus activism, youth conservative mobilization.",
+Candace Owens,UCL0u5uz7KZ9q-pe-FeHBIqw,political_commentator,2000000,2000000,,,,skipped,"Cross-platform prominence, contrarian identity positioning, conspiracy-adjacent since 2024.",
+Tucker Carlson,UCEwIHcFmVcTi3nLQhxECIhA,political_commentator,12000000,12000000,,,,skipped,Post-Fox independent show. Bridges legacy broadcast and podcast ecology.,
+Andrew Tate,UCMjBOELoAqmahSycIFzzaQQ,manosphere_grievance,0,0,,,,skipped,Central manosphere figure. 'Ideological entrepreneur' per recent scholarship.,Frequently deplatformed. Use available mirrors/re-uploads with caution for dating.
+Fresh and Fit,UC5sqmiMKJOIS38kj3SmPPXQ,manosphere_grievance,2000000,2000000,,,,skipped,Red-pill dating content with political commentary. Manosphere-politics crossover.,
+Pearl Davis,UCXF1WMHP9s8OBLHM1UjZaA,manosphere_grievance,2500000,2500000,,,,skipped,Female anti-feminist voice in manosphere. Contrarian gender positioning.,
+Jordan Peterson,UCL_f53ZEJxp8TtlOkHwMV9Q,manosphere_grievance,8000000,8000000,,,,skipped,Key bridge figure between intellectual respectability and grievance politics.,Straddles intellectual/manosphere categories. Psychology-to-politics pipeline.
+Tim Pool,UCG749Dj4V2fKa143f8sE60Q,pseudo_journalist,1400000,1400000,,,,skipped,Claims journalistic identity (Occupy Wall Street origins). Anti-mainstream epistemic authority.,
+Glenn Greenwald,UCFAQyZq0NqfCwVkRQoXpx0A,pseudo_journalist,600000,600000,,,,skipped,Actual journalist history. Shifted to anti-establishment independent media. Interesting authority claim.,
+Russell Brand,UCswH8ovgUp5Bdg-0_JTYFNw,pseudo_journalist,6500000,6500000,,,,skipped,Comedian-to-political-commentator pipeline. Conspiracy-adjacent. Deplatforming case.,
+Jimmy Dore,UC3M7l8ved_rYQ45AVzS0RGA,pseudo_journalist,1200000,1200000,,,,skipped,"Left-to-right pipeline figure. Comedian-journalist hybrid, anti-establishment framing.",
+Lex Fridman,UCSHZKJJfhK1eDUGLRRG99CA,libertarian_intellectual,4500000,4500000,,,,skipped,Long-form interviewer. Authority via guest prestige. Rogan network adjacent.,
+Patrick Bet-David,UCGX7nGXpz-CmO_Arg-cgJ7A,libertarian_intellectual,5000000,5000000,,,,skipped,Valuetainment. Business/entrepreneurial framing of political authority.,
+Dave Rubin,UCJdKr0Bgd_5saZYqLCa9mng,libertarian_intellectual,1800000,1800000,,,,skipped,Rubin Report. 'Classical liberal' to conservative pipeline. Intellectual self-positioning.,
+Michael Knowles,UCL-UKVdDkCJfUMDMb_H8tFQ,libertarian_intellectual,0,0,,,,skipped,Explicitly Catholic-intellectual framing. Different authority register than populist hosts.,Daily Wire channel; filter by host name.

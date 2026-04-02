@@ -1,0 +1,163 @@
+# =============================================================================
+# Podcast Authority Study - Channel Corpus Definition
+# =============================================================================
+# Selection criteria:
+#   - Subscriber count / cross-platform prominence
+#   - Guest-network centrality (per Lewis 2018 alternative influence network)
+#   - Prior literature coverage (Dowling & Miller, Bozzi, Vaarala, Rae)
+#   - Typological diversity across host personae
+#
+# Each channel is tagged with a primary persona type:
+#   comedian_generalist    - comedy-adjacent, "just asking questions"
+#   political_commentator  - explicitly partisan political commentary
+#   manosphere_grievance   - gender politics, masculinity, red-pill adjacent
+#   pseudo_journalist      - investigative style, documentary framing
+#   libertarian_intellectual - think-tank adjacent, policy-focused
+# =============================================================================
+
+date_range:
+  start: "2022-01-01"
+  end: "2025-12-31"
+
+channels:
+  # --- Comedian / Generalist Hosts ---
+  - name: "Joe Rogan"
+    youtube_channel_id: "UCzQUP1qoWDoEbmsQxvdjxgQ"
+    persona_type: "comedian_generalist"
+    platform_note: "Primary distribution is Spotify; YouTube clips channel. Full episodes on YouTube resumed 2024."
+    subscriber_estimate: 18000000
+    justification: "Central node in alternative influence network. Subject of Bozzi 2025, Rae 2023."
+
+  - name: "Theo Von"
+    youtube_channel_id: "UC5AQEUAwCh1sGDvkQobt1gw"
+    persona_type: "comedian_generalist"
+    subscriber_estimate: 4500000
+    justification: "Comedy-first podcast increasingly featuring political guests. Rogan network adjacent."
+
+  - name: "Andrew Schulz"
+    youtube_channel_id: "UCjYO25ZVJT523TD1iYHzcbQ"
+    persona_type: "comedian_generalist"
+    subscriber_estimate: 3500000
+    justification: "Flagrant podcast, comedy-driven but covers political/cultural topics with anti-establishment framing."
+
+  # --- Explicitly Political Commentators ---
+  - name: "Ben Shapiro"
+    youtube_channel_id: "UCnQC_G5Xsjhp9fEJKuIcrSw"
+    persona_type: "political_commentator"
+    subscriber_estimate: 6500000
+    justification: "Core case in Dowling & Miller 2022. Daily Wire ecosystem anchor."
+
+  - name: "Dan Bongino"
+    youtube_channel_id: "UCL-UKVdDkCJfUMDMb_H8tFQ"
+    persona_type: "political_commentator"
+    subscriber_estimate: 3500000
+    justification: "Core case in Dowling & Miller 2022. Former law enforcement, anti-media framing."
+
+  - name: "Matt Walsh"
+    youtube_channel_id: "UCnQC_G5Xsjhp9fEJKuIcrSw"
+    persona_type: "political_commentator"
+    platform_note: "Uses Daily Wire channel; filter by host name in title/description."
+    subscriber_estimate: 0
+    justification: "Prominent culture-war commentator, documentary producer (What Is a Woman?)."
+
+  - name: "Steven Crowder"
+    youtube_channel_id: "UCIveFvW-ARp_B_RckhKnfAg"
+    persona_type: "political_commentator"
+    subscriber_estimate: 6000000
+    justification: "Louder with Crowder. Confrontational style, comedy-debate hybrid, deplatforming history."
+
+  - name: "Charlie Kirk"
+    youtube_channel_id: "UCea59ys1mp38G1CdHIf2Z_A"
+    persona_type: "political_commentator"
+    subscriber_estimate: 3000000
+    justification: "Turning Point USA. Campus activism, youth conservative mobilization."
+
+  - name: "Candace Owens"
+    youtube_channel_id: "UCL0u5uz7KZ9q-pe-FeHBIqw"
+    persona_type: "political_commentator"
+    subscriber_estimate: 2000000
+    justification: "Cross-platform prominence, contrarian identity positioning, conspiracy-adjacent since 2024."
+
+  - name: "Tucker Carlson"
+    youtube_channel_id: "UCEwIHcFmVcTi3nLQhxECIhA"
+    persona_type: "political_commentator"
+    subscriber_estimate: 12000000
+    justification: "Post-Fox independent show. Bridges legacy broadcast and podcast ecology."
+
+  # --- Manosphere / Gender Grievance Hosts ---
+  - name: "Andrew Tate"
+    youtube_channel_id: "UCMjBOELoAqmahSycIFzzaQQ"
+    persona_type: "manosphere_grievance"
+    platform_note: "Frequently deplatformed. Use available mirrors/re-uploads with caution for dating."
+    subscriber_estimate: 0
+    justification: "Central manosphere figure. 'Ideological entrepreneur' per recent scholarship."
+
+  - name: "Fresh and Fit"
+    youtube_channel_id: "UC5sqmiMKJOIS38kj3SmPPXQ"
+    persona_type: "manosphere_grievance"
+    subscriber_estimate: 2000000
+    justification: "Red-pill dating content with political commentary. Manosphere-politics crossover."
+
+  - name: "Pearl Davis"
+    youtube_channel_id: "UCXF1WMHP9s8OBLHM1UjZaA"
+    persona_type: "manosphere_grievance"
+    subscriber_estimate: 2500000
+    justification: "Female anti-feminist voice in manosphere. Contrarian gender positioning."
+
+  - name: "Jordan Peterson"
+    youtube_channel_id: "UCL_f53ZEJxp8TtlOkHwMV9Q"
+    persona_type: "manosphere_grievance"
+    platform_note: "Straddles intellectual/manosphere categories. Psychology-to-politics pipeline."
+    subscriber_estimate: 8000000
+    justification: "Key bridge figure between intellectual respectability and grievance politics."
+
+  # --- Pseudo-Journalistic / Investigative Hosts ---
+  - name: "Tim Pool"
+    youtube_channel_id: "UCG749Dj4V2fKa143f8sE60Q"
+    persona_type: "pseudo_journalist"
+    subscriber_estimate: 1400000
+    justification: "Claims journalistic identity (Occupy Wall Street origins). Anti-mainstream epistemic authority."
+
+  - name: "Glenn Greenwald"
+    youtube_channel_id: "UCFAQyZq0NqfCwVkRQoXpx0A"
+    persona_type: "pseudo_journalist"
+    subscriber_estimate: 600000
+    justification: "Actual journalist history. Shifted to anti-establishment independent media. Interesting authority claim."
+
+  - name: "Russell Brand"
+    youtube_channel_id: "UCswH8ovgUp5Bdg-0_JTYFNw"
+    persona_type: "pseudo_journalist"
+    subscriber_estimate: 6500000
+    justification: "Comedian-to-political-commentator pipeline. Conspiracy-adjacent. Deplatforming case."
+
+  - name: "Jimmy Dore"
+    youtube_channel_id: "UC3M7l8ved_rYQ45AVzS0RGA"
+    persona_type: "pseudo_journalist"
+    subscriber_estimate: 1200000
+    justification: "Left-to-right pipeline figure. Comedian-journalist hybrid, anti-establishment framing."
+
+  # --- Libertarian / Intellectual Hosts ---
+  - name: "Lex Fridman"
+    youtube_channel_id: "UCSHZKJJfhK1eDUGLRRG99CA"
+    persona_type: "libertarian_intellectual"
+    subscriber_estimate: 4500000
+    justification: "Long-form interviewer. Authority via guest prestige. Rogan network adjacent."
+
+  - name: "Patrick Bet-David"
+    youtube_channel_id: "UCGX7nGXpz-CmO_Arg-cgJ7A"
+    persona_type: "libertarian_intellectual"
+    subscriber_estimate: 5000000
+    justification: "Valuetainment. Business/entrepreneurial framing of political authority."
+
+  - name: "Dave Rubin"
+    youtube_channel_id: "UCJdKr0Bgd_5saZYqLCa9mng"
+    persona_type: "libertarian_intellectual"
+    subscriber_estimate: 1800000
+    justification: "Rubin Report. 'Classical liberal' to conservative pipeline. Intellectual self-positioning."
+
+  - name: "Michael Knowles"
+    youtube_channel_id: "UCL-UKVdDkCJfUMDMb_H8tFQ"
+    persona_type: "libertarian_intellectual"
+    platform_note: "Daily Wire channel; filter by host name."
+    subscriber_estimate: 0
+    justification: "Explicitly Catholic-intellectual framing. Different authority register than populist hosts."
