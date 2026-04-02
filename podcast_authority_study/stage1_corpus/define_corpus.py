@@ -17,8 +17,13 @@ import sys
 from pathlib import Path
 
 import yaml
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+
+try:
+    from googleapiclient.discovery import build
+    from googleapiclient.errors import HttpError
+    HAS_GOOGLE_API = True
+except ImportError:
+    HAS_GOOGLE_API = False
 
 
 def load_channel_config(config_path: str = "config/channels.yaml") -> dict:
@@ -109,6 +114,9 @@ def main():
             ch["actual_subscriber_count"] = ch.get("subscriber_estimate")
             ch["uploads_playlist_id"] = None
     else:
+        if not HAS_GOOGLE_API:
+            print("ERROR: google-api-python-client not installed. Use --skip-validation or pip install google-api-python-client")
+            sys.exit(1)
         print("\nValidating channels against YouTube API...")
         youtube = build("youtube", "v3", developerKey=args.api_key)
         channels = validate_channels(youtube, channels)

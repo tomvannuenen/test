@@ -51,8 +51,10 @@ CODING DIMENSIONS:
 """
     for dim_name, dim_data in dimensions.items():
         prompt += f"\n## {dim_name}\n{dim_data['description']}\nValid codes:\n"
-        for code, desc in dim_data["codes"].items():
-            prompt += f"  - {code}: {desc}\n"
+        # codes is a list of single-key dicts from YAML
+        for code_entry in dim_data["codes"]:
+            for code, desc in code_entry.items():
+                prompt += f"  - {code}: {desc}\n"
 
     prompt += """
 RESPONSE SCHEMA (return exactly this JSON structure):

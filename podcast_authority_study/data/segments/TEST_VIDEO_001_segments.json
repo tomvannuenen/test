@@ -1,0 +1,28 @@
+{
+  "video_id": "TEST_VIDEO_001",
+  "channel_name": "Joe Rogan",
+  "persona_type": "comedian_generalist",
+  "title": "Former Intelligence Officer Reveals Government Secrets | EP 2045",
+  "publish_date": "2024-03-15",
+  "transcript_source": "auto_caption",
+  "total_utterances": 30,
+  "total_windows": 2,
+  "total_words": 309,
+  "window_seconds": 300,
+  "windows": [
+    {
+      "window_index": 0,
+      "start_time": 0,
+      "end_time": 300,
+      "word_count": 160,
+      "text": "Look, I'm just a comedian, right? I'm not an expert on anything. But when you see what the mainstream media is doing, you have to say something. They're literally lying to people every single day. My guest today is a former intelligence officer who's going to blow your mind. The government doesn't want you to hear what he has to say. That's why they tried to deplatform us three times. But here's the thing - the audience keeps growing because people want the truth. They want someone who's going to be honest with them. Not some corporate talking head reading a teleprompter. I grew up in a working class family. I know what it's like to struggle. These elites in Washington have no idea what real life is like. And now they want to tell us what we can and can't say online? That's the censorship machine at work. Big tech, big government, big media - they're all working together."
+    },
+    {
+      "window_index": 1,
+      "start_time": 300,
+      "end_time": 600,
+      "word_count": 142,
+      "text": "But you know what? Common sense still wins. Regular people can see through the BS. That's why this show exists. That's why you're here. We don't need credentials to see what's obvious. Sometimes the guy without the PhD sees things more clearly. Because he hasn't been indoctrinated by the university system. Alright so my guest wrote this incredible report about government surveillance. The kind of stuff they'd never cover on CNN. And what's wild is he got fired for trying to tell the truth. Cancelled. Just like that. Twenty years of service, gone. Because the regime doesn't want whistleblowers. They want compliance. They want you to shut up and obey. But we're not going to do that on this show. We're going to ask the hard questions that nobody else will. And if they come after us for it, so be it."
+    }
+  ]
+}

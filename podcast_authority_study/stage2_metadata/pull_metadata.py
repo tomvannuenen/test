@@ -23,8 +23,13 @@ from datetime import datetime
 from pathlib import Path
 
 import yaml
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+
+try:
+    from googleapiclient.discovery import build
+    from googleapiclient.errors import HttpError
+    HAS_GOOGLE_API = True
+except ImportError:
+    HAS_GOOGLE_API = False
 
 
 def parse_duration(iso_duration: str) -> int:

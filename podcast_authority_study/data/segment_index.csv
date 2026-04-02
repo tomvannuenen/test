@@ -1,0 +1,2 @@
+video_id,channel_name,persona_type,total_windows,total_words,transcript_source
+TEST_VIDEO_001,Joe Rogan,comedian_generalist,2,309,auto_caption
