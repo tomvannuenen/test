@@ -1,0 +1,7 @@
+requests>=2.31.0
+pyyaml>=6.0
+pandas>=2.1.0
+
+# Notebook only
+jupyter>=1.0.0
+nbformat>=5.9.0

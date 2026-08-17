@@ -1,0 +1,657 @@
+# =============================================================================
+# Country-Specific Academic Title Mapping
+# =============================================================================
+# The brief's central coding hazard: "Research Fellow", "Senior Lecturer" and
+# "Assistant Professor (Teaching)" mean different things across national
+# systems. We therefore never pattern-match on the bare English string. Every
+# title is resolved against the academic system of the EMPLOYING COUNTRY.
+#
+# Resolution order (see stage3_coding/code_trajectories.py):
+#   1. Organization-type override (industry / non-academic employer) wins first.
+#   2. Rules for the country's academic system, evaluated IN ORDER.
+#   3. Rules for the `generic` fallback system.
+#   4. Unmatched -> prior_rank_class = "other", confidence = "none".
+#
+# First match wins, so specific rules are listed before general ones. The
+# canonical trap is "Research Assistant Professor": in Hong Kong and in US
+# medical/soft-money settings this is a NON-ladder contract role, and it must
+# be tested before the generic "assistant professor" rule.
+#
+# `confidence` drives the validation sampler: low-confidence codings are
+# oversampled for hand-checking (stage4_validation).
+#   high   - the title is unambiguous within this system
+#   medium - usually right, but the system admits exceptions
+#   low    - genuinely ambiguous; the automated code is a best guess
+# =============================================================================
+
+rank_classes:
+  - ladder                 # tenure-track or tenured, or the national equivalent
+  - non-ladder-academic    # academic employer, no ladder standing
+  - postdoc                # postdoctoral training position
+  - industry               # non-academic employer
+  - other                  # student, emeritus, unclassifiable
+
+# -----------------------------------------------------------------------------
+# ISO 3166-1 alpha-2 country -> academic system
+# -----------------------------------------------------------------------------
+# Countries absent from this map fall through to `generic`.
+country_systems:
+  "US": us
+  "CA": ca
+  "GB": uk
+  "IE": uk
+  "AU": anz
+  "NZ": anz
+  "HK": hk
+  "SG": sg
+  "CN": cn
+  "TW": cn
+  "JP": jp
+  "KR": kr
+  "NL": nl
+  "BE": nl
+  "DE": de
+  "AT": de
+  "CH": ch
+  "FR": fr
+  "IT": it
+  "ES": es
+  "PT": es
+  "DK": nordic_dk_no
+  "NO": nordic_dk_no
+  "SE": nordic_se_fi
+  "FI": nordic_se_fi
+  "IS": nordic_se_fi
+  "IL": il
+  "IN": india
+  "BR": latam
+  "MX": latam
+  "CL": latam
+  "ZA": uk       # South African system follows the UK lecturer ladder
+
+# -----------------------------------------------------------------------------
+# Organization-type overrides, applied before any title rule
+# -----------------------------------------------------------------------------
+organization_overrides:
+
+  # Non-academic employers. A "Research Scientist" at Microsoft Research is
+  # industry regardless of how academic the title sounds.
+  industry:
+    confidence: high
+    name_patterns:
+      - '\b(inc|llc|ltd|gmbh|corp|corporation|company|co)\b\.?$'
+      - '\b(google|deepmind|alphabet|microsoft|meta platforms|facebook|amazon|apple|netflix|ibm|intel|nvidia|adobe|oracle|salesforce)\b'
+      - '\b(twitter|x corp|snap inc|pinterest|spotify|linkedin|tiktok|bytedance|uber|airbnb|yahoo|ebay|paypal)\b'
+      - '\b(nokia bell labs|bell labs|xerox parc|sri international|palantir|openai|anthropic|scale ai)\b'
+      - '\bconsulting\b'
+
+  # Independent research institutes, think tanks and NGOs. Academic-adjacent
+  # but they have no professorial ladder, so a move from one into a US
+  # assistant professorship is NOT a ladder-to-ladder move.
+  research_institute:
+    rank_class: non-ladder-academic
+    confidence: medium
+    name_patterns:
+      - '\bpew research\b'
+      - '\bdata (and|&) society\b'
+      - '\b(rand|brookings|urban institute|aspen institute)\b'
+      - '\bmozilla foundation\b'
+      - '\bnational bureau of economic research\b'
+      - '\balan turing institute\b'
+
+  # Max Planck / CNRS / academies are academic; they are NOT overridden here
+  # and fall through to their country's title rules, where e.g. a CNRS
+  # `chargé de recherche` correctly resolves to a permanent research ladder.
+
+# -----------------------------------------------------------------------------
+# Patterns applied in every system, before system-specific rules
+# -----------------------------------------------------------------------------
+# These cover statuses that outrank the substantive title.
+universal_prefix_rules:
+  - pattern: '\b(emerit|professor emerit)'
+    rank_class: other
+    confidence: high
+    note: "Emeritus status; not an active prior position."
+  - pattern: '\b(phd|ph\.d\.|doctoral|graduate) (student|candidate|researcher|fellow)\b'
+    rank_class: other
+    confidence: high
+    note: "Still in training; codes as student, not a prior position."
+  - pattern: '\b(visiting|guest|honorary|affiliate[d]?|adjunct courtesy|courtesy)\b'
+    rank_class: non-ladder-academic
+    confidence: medium
+    note: "Visiting/courtesy appointments carry no ladder standing anywhere."
+
+# -----------------------------------------------------------------------------
+# Academic systems
+# -----------------------------------------------------------------------------
+systems:
+
+  # ---------------------------------------------------------------------------
+  us:
+    label: "United States"
+    notes: >
+      Ladder = tenure-track/tenured Assistant, Associate or Full Professor.
+      Every other professorial modifier (research, clinical, teaching,
+      practice, adjunct, visiting) denotes a non-ladder track.
+    rules:
+      - pattern: '\bresearch (assistant|associate|full)? ?professor\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "US research-professor track is soft-money, non-tenure-track."
+      - pattern: '\b(clinical|teaching|practice|professor of the practice|of practice)\b.*professor|professor.*\b(of the practice|of practice|teaching|clinical)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+      - pattern: 'professor\s*\((teaching|clinical|practice|research|educator)'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "Parenthesised track marker, e.g. 'Assistant Professor (Teaching)'."
+      - pattern: '\badjunct\b'
+        rank_class: non-ladder-academic
+        confidence: high
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(lecturer|senior lecturer|instructor|preceptor)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "US Lecturer is teaching-track, unlike the UK Lecturer."
+      - pattern: '\b(project scientist|academic coordinator|specialist|academic administrator)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "University of California non-Senate research/academic series."
+      - pattern: '\b(research (scientist|scholar|associate|fellow|staff))\b'
+        rank_class: non-ladder-academic
+        confidence: low
+        note: >
+          Ambiguous: an early-career "Research Fellow" is often a postdoc in
+          all but name, while a mid-career one is a staff scientist. Resolved
+          by duration heuristic in code; flagged for hand-checking.
+      - pattern: '\b(dean|provost|chair|director)\b'
+        rank_class: other
+        confidence: low
+        note: "Administrative title masking an underlying faculty rank."
+
+  # ---------------------------------------------------------------------------
+  ca:
+    label: "Canada"
+    notes: "US-style ladder, plus an explicit non-ladder teaching stream."
+    rules:
+      - pattern: '\b(teaching stream|teaching-stream|lecturer|instructor)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+      - pattern: '\bresearch (assistant|associate)? ?professor\b'
+        rank_class: non-ladder-academic
+        confidence: high
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: high
+
+  # ---------------------------------------------------------------------------
+  uk:
+    label: "United Kingdom / Ireland / South Africa"
+    notes: >
+      The key divergence from the US. A UK Lecturer on an open-ended contract
+      is the ladder entry grade (roughly US Assistant Professor); Senior
+      Lecturer and Reader sit at roughly US Associate. Conversely "Research
+      Fellow" and "Teaching Fellow" are NOT ladder posts, and "Professor"
+      unmodified is the full chair.
+    rules:
+      - pattern: '\b(teaching fellow|teaching associate|tutor|demonstrator|graduate teaching assistant)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "Teaching-only, fixed-term; not the lecturer ladder."
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(research (assistant|associate))\b'
+        rank_class: postdoc
+        confidence: high
+        note: "UK RA/PDRA is the standard postdoc grade."
+      - pattern: '\b(senior|principal) research fellow\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+        note: "Senior research track, contract-funded, off the lecturer ladder."
+      - pattern: '\bresearch fellow\b'
+        rank_class: postdoc
+        confidence: medium
+        note: >
+          Usually a postdoc. Prestigious independent fellowships (ERC, Royal
+          Society URF, Leverhulme ECF) are quasi-ladder; flagged for review.
+      - pattern: '\b(reader|senior lecturer)\b'
+        rank_class: ladder
+        confidence: high
+        note: "Roughly US Associate Professor."
+      - pattern: '\blecturer\b'
+        rank_class: ladder
+        confidence: medium
+        note: >
+          UK Lecturer = ladder entry grade. Fixed-term teaching-only lectureships
+          exist and are misclassified here; the single largest source of
+          expected error in the UK cell.
+      - pattern: '\b(chair|professor)\b'
+        rank_class: ladder
+        confidence: high
+
+  # ---------------------------------------------------------------------------
+  anz:
+    label: "Australia / New Zealand"
+    notes: >
+      Level A-E ladder. Lecturer (Level B) is ladder; Associate Lecturer
+      (Level A) is the entry/teaching grade. "Research Fellow" is the
+      postdoc grade, as in the UK.
+    rules:
+      - pattern: '\b(associate lecturer|teaching fellow|tutor|casual academic)\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(senior|principal) research fellow\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+      - pattern: '\b(research fellow|research associate)\b'
+        rank_class: postdoc
+        confidence: medium
+      - pattern: '\b(senior lecturer|associate professor|reader)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\blecturer\b'
+        rank_class: ladder
+        confidence: medium
+      - pattern: '\bprofessor\b'
+        rank_class: ladder
+        confidence: high
+
+  # ---------------------------------------------------------------------------
+  hk:
+    label: "Hong Kong"
+    notes: >
+      Directly relevant to the brief's Hong Kong question. HK universities
+      adopted US-style professorial titles, so Assistant Professor IS the
+      ladder entry grade. But HK also runs a large parallel NON-ladder
+      "Research Assistant Professor" (RAP) grade, which pattern-matching on
+      "assistant professor" would wrongly count as Path A. The RAP rule must
+      therefore precede the professorial rule.
+    rules:
+      - pattern: '\bresearch (assistant|associate|full)? ?professor\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "HK Research Assistant Professor is a fixed-term, non-ladder grade."
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(lecturer|senior lecturer|instructor|teaching fellow|professor of practice)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "HK teaching track; NOT the UK lecturer ladder despite the shared word."
+      - pattern: '\bresearch fellow\b'
+        rank_class: postdoc
+        confidence: medium
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(chair professor)\b'
+        rank_class: ladder
+        confidence: high
+
+  # ---------------------------------------------------------------------------
+  sg:
+    label: "Singapore"
+    notes: >
+      NUS/NTU/SMU run a US-style ladder. Consequently "Lecturer" and "Senior
+      Lecturer" are EDUCATOR-track (non-ladder) — the opposite of the UK
+      reading of the same words. "Research Fellow" is the standard postdoc
+      title and is very common; coding it as ladder would badly inflate Path A.
+    rules:
+      - pattern: '\b(senior lecturer|lecturer|instructor|educator track)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "Singapore educator track; contrast with the UK, where Lecturer is ladder."
+      - pattern: '\bresearch (assistant|associate)? ?professor\b'
+        rank_class: non-ladder-academic
+        confidence: high
+      - pattern: '\b(senior|principal) research fellow\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+      - pattern: '\b(research fellow|post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+        note: "At NUS/NTU 'Research Fellow' is the standard postdoc appointment."
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: high
+
+  # ---------------------------------------------------------------------------
+  cn:
+    label: "China / Taiwan"
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(research (assistant|associate)? ?professor|assistant researcher)\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\blecturer\b'
+        rank_class: ladder
+        confidence: low
+        note: >
+          Historically the entry-grade faculty rank in the Chinese system
+          (讲师), but increasingly a non-ladder teaching post as universities
+          convert to tenure track. Genuinely ambiguous; always hand-check.
+
+  # ---------------------------------------------------------------------------
+  jp:
+    label: "Japan"
+    rules:
+      - pattern: '\b(project|specially appointed|tokunin|program-specific)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "Fixed-term externally funded posts (特任); non-ladder."
+      - pattern: '\b(post-?doc|post-?doctoral|jsps (research )?fellow)\b'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(assistant professor|lecturer|associate professor|professor)\b'
+        rank_class: ladder
+        confidence: medium
+        note: "Japanese Lecturer (講師) is a regular faculty rank between assistant and associate."
+
+  # ---------------------------------------------------------------------------
+  kr:
+    label: "South Korea"
+    rules:
+      - pattern: '\bresearch professor\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "Korean Research Professor is a contract, grant-funded post."
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: high
+
+  # ---------------------------------------------------------------------------
+  nl:
+    label: "Netherlands / Flanders"
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(universitair docent|assistant professor|ud)\b'
+        rank_class: ladder
+        confidence: medium
+        note: >
+          NL assistant professorships may be tenure-track or fixed-term;
+          the title alone does not distinguish them.
+      - pattern: '\b(universitair hoofddocent|associate professor|uhd)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(hoogleraar|full professor|professor)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(docent|lecturer|instructor)\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+      - pattern: '\b(onderzoeker|researcher|research associate)\b'
+        rank_class: non-ladder-academic
+        confidence: low
+
+  # ---------------------------------------------------------------------------
+  de:
+    label: "Germany / Austria"
+    notes: >
+      "Wissenschaftlicher Mitarbeiter" spans doctoral students and postdocs
+      and is the least resolvable title in the whole scheme.
+    rules:
+      - pattern: '\b(junior ?prof|juniorprofessor|w1)\b'
+        rank_class: ladder
+        confidence: medium
+        note: "W1 junior professorship; tenure-track only when explicitly 'mit Tenure Track'."
+      - pattern: '\b(w2|w3|lehrstuhl|ordentliche|universitätsprofessor|professor)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(privatdozent|habilitand|akademische[rn]? (rat|oberrat))\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+      - pattern: '\b(gruppenleiter|group leader|research group leader)\b'
+        rank_class: non-ladder-academic
+        confidence: low
+        note: "A Max Planck / Helmholtz group leader is quasi-ladder; hand-check."
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\bwissenschaftliche[rn]? mitarbeiter'
+        rank_class: postdoc
+        confidence: low
+        note: "May equally be a doctoral position; always hand-check."
+
+  # ---------------------------------------------------------------------------
+  ch:
+    label: "Switzerland"
+    rules:
+      - pattern: '\b(oberassistent|senior (scientist|researcher)|maître assistant)\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(snsf professor|snf professor|assistant professor|tenure track)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: high
+
+  # ---------------------------------------------------------------------------
+  fr:
+    label: "France"
+    notes: >
+      CNRS/INRIA researcher grades are permanent civil-service research posts
+      with no teaching ladder equivalent. We code them as ladder because they
+      are permanent, competitively won and structurally analogous to tenure.
+    rules:
+      - pattern: '\b(ater|attaché temporaire|attache temporaire)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+      - pattern: '\b(post-?doc|post-?doctorant|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(maître de conférences|maitre de conferences|mcf)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(chargé de recherche|charge de recherche|directeur de recherche|cr(1|2)?\b|dr(1|2)?\b)'
+        rank_class: ladder
+        confidence: medium
+        note: "Permanent CNRS/INRIA/INSERM research post."
+      - pattern: '\b(professeur|professor)\b'
+        rank_class: ladder
+        confidence: high
+
+  # ---------------------------------------------------------------------------
+  it:
+    label: "Italy"
+    rules:
+      - pattern: '\b(rtd-?a|ricercatore a tempo determinato di tipo a|assegnista|assegno di ricerca)\b'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(rtd-?b|ricercatore a tempo determinato di tipo b|tenure track)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(professore (associato|ordinario)|associate professor|full professor|professor)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(ricercatore|researcher)\b'
+        rank_class: ladder
+        confidence: low
+        note: "Pre-2010 ricercatore was permanent; post-reform it is fixed-term. Hand-check."
+
+  # ---------------------------------------------------------------------------
+  es:
+    label: "Spain / Portugal"
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral|juan de la cierva)\b'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(ramón y cajal|ramon y cajal)\b'
+        rank_class: ladder
+        confidence: medium
+        note: "Tenure-track-like bridge programme."
+      - pattern: '\b(profesor ayudante doctor|profesor contratado doctor|profesor titular|catedrático|catedratico)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(profesor asociado)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+        note: "Spanish 'asociado' is a part-time adjunct, NOT a US-style associate professor."
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: medium
+
+  # ---------------------------------------------------------------------------
+  nordic_dk_no:
+    label: "Denmark / Norway"
+    notes: >
+      Split from Sweden/Finland because 'adjunkt' inverts between the two
+      groups: a Danish adjunkt is an assistant professor (ladder), a Swedish
+      adjunkt is a non-ladder teaching post.
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(adjunkt|assistant professor|førsteamanuensis|forsteamanuensis|associate professor|lektor)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(professor|professor msk)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(forsker|researcher|research scientist)\b'
+        rank_class: non-ladder-academic
+        confidence: low
+      - pattern: '\b(universitetslektor|amanuensis|undervisningsassistent)\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+
+  # ---------------------------------------------------------------------------
+  nordic_se_fi:
+    label: "Sweden / Finland / Iceland"
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(adjunkt|lecturer|universitetsadjunkt)\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+        note: "Swedish adjunkt is a teaching post, unlike the Danish adjunkt."
+      - pattern: '\b(biträdande lektor|bitradande lektor|assistant professor|tenure track)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(universitetslektor|lektor|senior lecturer|associate professor|docent)\b'
+        rank_class: ladder
+        confidence: high
+        note: "Swedish universitetslektor is a permanent ladder post."
+      - pattern: '\b(professor)\b'
+        rank_class: ladder
+        confidence: high
+      - pattern: '\b(forskare|researcher|forskarassistent|academy research fellow)\b'
+        rank_class: non-ladder-academic
+        confidence: low
+
+  # ---------------------------------------------------------------------------
+  il:
+    label: "Israel"
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(adjunct|teaching fellow|external lecturer)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+      - pattern: '\b(senior lecturer|lecturer|associate professor|full professor|professor)\b'
+        rank_class: ladder
+        confidence: medium
+        note: "Israeli Senior Lecturer is the tenure-track entry grade."
+
+  # ---------------------------------------------------------------------------
+  india:
+    label: "India"
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(guest|contract|ad-?hoc) (faculty|lecturer)\b'
+        rank_class: non-ladder-academic
+        confidence: high
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: medium
+      - pattern: '\b(reader|lecturer)\b'
+        rank_class: ladder
+        confidence: low
+
+  # ---------------------------------------------------------------------------
+  latam:
+    label: "Latin America"
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral|pós-?doutorado)'
+        rank_class: postdoc
+        confidence: high
+      - pattern: '\b(profesor asociado|professor associado)\b'
+        rank_class: ladder
+        confidence: low
+      - pattern: '\b(profesor|professor|investigador)\b'
+        rank_class: ladder
+        confidence: low
+
+  # ---------------------------------------------------------------------------
+  generic:
+    label: "Fallback for unmapped countries"
+    notes: >
+      Deliberately conservative. Anything resolved here is marked low
+      confidence and is oversampled during validation.
+    rules:
+      - pattern: '\b(post-?doc|post-?doctoral)'
+        rank_class: postdoc
+        confidence: medium
+      - pattern: '\b(adjunct|visiting|teaching fellow|tutor)\b'
+        rank_class: non-ladder-academic
+        confidence: medium
+      - pattern: '\bresearch (assistant|associate)? ?professor\b'
+        rank_class: non-ladder-academic
+        confidence: low
+      - pattern: '\b(assistant|associate|full)? ?professor\b'
+        rank_class: ladder
+        confidence: low
+      - pattern: '\b(lecturer|instructor|docent)\b'
+        rank_class: non-ladder-academic
+        confidence: low
+      - pattern: '\b(research (scientist|fellow|associate|officer))\b'
+        rank_class: non-ladder-academic
+        confidence: low
+
+# -----------------------------------------------------------------------------
+# Duration heuristic for ambiguous research titles
+# -----------------------------------------------------------------------------
+# Applied only to rules whose note marks them ambiguous between postdoc and
+# staff-scientist readings (confidence: low, class in {postdoc,
+# non-ladder-academic}). Short spells read as postdocs; long ones as staff.
+research_title_duration_heuristic:
+  enabled: true
+  short_years_max: 3        # <= 3 years -> postdoc
+  long_years_min: 5         # >= 5 years -> non-ladder-academic (staff scientist)
+
+# -----------------------------------------------------------------------------
+# "Extended postdoc" threshold
+# -----------------------------------------------------------------------------
+# The brief lists "extended postdoc" under Path B. A 2-year postdoc is the
+# modal US route and should NOT be pooled with adjunct/lecturer trajectories,
+# so only postdocs at or beyond this duration count toward Path B (broad).
+extended_postdoc_min_years: 4

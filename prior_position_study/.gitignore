@@ -1,0 +1,17 @@
+# Cached API responses: regenerable, and large.
+data/cache/
+
+# Pipeline outputs, including fixture outputs (regenerate with --selftest).
+data/*.jsonl
+data/*.csv
+data/tables/
+data/tables_fixture/
+
+# Hand-coded files are NOT ignored -- they represent real human effort and
+# should be committed:
+!data/validation_sample_coded.csv
+!data/manual_coded.csv
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

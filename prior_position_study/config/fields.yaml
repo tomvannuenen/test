@@ -1,0 +1,185 @@
+# =============================================================================
+# Sampling Frame Definition
+# =============================================================================
+# Defines the six target fields in OpenAlex terms, plus the institution and
+# date filters that bound the population:
+#
+#   assistant/associate professors at US PhD-granting institutions, first
+#   appointed to their current ladder-rank role between 2016 and 2024.
+#
+# OpenAlex subfield IDs are Scopus-ASJC derived. They are asserted here WITH
+# their expected display names; stage1_frame/build_frame.py verifies each ID
+# against /subfields/{id} at run time and aborts on a mismatch rather than
+# silently harvesting the wrong literature. Fix the ID here if verification
+# fails; do not disable the check.
+# =============================================================================
+
+population:
+  appointment_year_min: 2016
+  appointment_year_max: 2024
+  target_country: US
+  # OpenAlex institution types treated as academic employers.
+  institution_types: [education, facility]
+  # PhD-granting proxy. OpenAlex carries no Carnegie classification, so we
+  # approximate doctoral universities by research output. Override by placing
+  # a curated ROR list at config/phd_granting_institutions.csv (column: ror).
+  min_institution_works_count: 20000
+  institution_allowlist_csv: config/phd_granting_institutions.csv
+
+sampling:
+  # Per-field cap keeps any one discipline from dominating the pooled base
+  # rates (brief: "stratify by field so no single discipline dominates").
+  per_field_target: 120          # 6 fields x 120 = 720, inside the 400-800 band
+  per_field_max_candidates: 1500 # harvest ceiling before filtering
+  random_seed: 42
+
+# -----------------------------------------------------------------------------
+# Fields
+# -----------------------------------------------------------------------------
+# `subfields` drives the OpenAlex author query. `topic_keywords` is a
+# secondary screen applied to an author's top topics, used to pull in
+# interdisciplinary scholars whose subfield tag is generic (iSchool and
+# institute faculty are the main beneficiaries) and to exclude clear
+# out-of-scope matches.
+fields:
+
+  computational_social_science:
+    label: "Computational Social Science"
+    subfields:
+      - id: 3312
+        name: "Sociology and Political Science"
+      - id: 1706
+        name: "Computer Science Applications"
+    topic_keywords:
+      include:
+        - computational social science
+        - social network analysis
+        - social media
+        - misinformation
+        - text as data
+        - agent-based model
+        - digital trace data
+        - network science
+      exclude:
+        - molecular
+        - protein
+        - clinical trial
+        - astrophysic
+
+  communication:
+    label: "Communication"
+    subfields:
+      - id: 3315
+        name: "Communication"
+    topic_keywords:
+      include:
+        - media effects
+        - political communication
+        - journalism
+        - public opinion
+        - health communication
+        - audience
+        - framing
+      exclude:
+        - optical communication
+        - wireless communication
+        - antenna
+        - telecommunication network
+
+  information_science:
+    label: "Information Science"
+    subfields:
+      - id: 3309
+        name: "Library and Information Sciences"
+    topic_keywords:
+      include:
+        - information behavior
+        - information retrieval
+        - digital libraries
+        - data curation
+        - scholarly communication
+        - bibliometric
+        - information policy
+      exclude:
+        - quantum information
+        - information theory coding
+
+  science_technology_studies:
+    label: "Science and Technology Studies"
+    subfields:
+      - id: 1207
+        name: "History and Philosophy of Science"
+    topic_keywords:
+      include:
+        - science and technology studies
+        - sociology of science
+        - infrastructure studies
+        - expertise
+        - algorithmic accountability
+        - responsible innovation
+        - sociotechnical
+      exclude:
+        - medieval philosophy
+        - ancient philosophy
+
+  digital_humanities:
+    label: "Digital Humanities"
+    subfields:
+      - id: 1208
+        name: "Literature and Literary Theory"
+      - id: 3316
+        name: "Cultural Studies"
+    topic_keywords:
+      include:
+        - digital humanities
+        - cultural analytics
+        - distant reading
+        - text mining humanities
+        - digital archive
+        - computational literary
+        - media studies
+      exclude:
+        - clinical
+        - engineering design
+
+  human_computer_interaction:
+    label: "Human-Computer Interaction"
+    subfields:
+      - id: 1709
+        name: "Human-Computer Interaction"
+    topic_keywords:
+      include:
+        - computer-supported cooperative work
+        - user experience
+        - social computing
+        - crowdsourcing
+        - accessibility
+        - human-centered
+        - interaction design
+      exclude:
+        - haptic actuator hardware
+        - robot kinematics
+
+# -----------------------------------------------------------------------------
+# API access
+# -----------------------------------------------------------------------------
+openalex:
+  base_url: https://api.openalex.org
+  # OpenAlex "polite pool": supplying a contact address raises rate limits.
+  mailto: tomvannuenen@berkeley.edu
+  per_page: 200
+  max_retries: 5
+  backoff_seconds: [2, 4, 8, 16, 32]
+  requests_per_second: 8
+
+orcid:
+  # The public record endpoint is used for employments/educations. The SEARCH
+  # endpoint requires a client-credentials token; set ORCID_CLIENT_ID and
+  # ORCID_CLIENT_SECRET to enable it. Without a token the pipeline resolves
+  # ORCIDs supplied by OpenAlex author records only, which is the intended
+  # join path anyway.
+  base_url: https://pub.orcid.org/v3.0
+  token_url: https://orcid.org/oauth/token
+  max_retries: 5
+  backoff_seconds: [2, 4, 8, 16, 32]
+  requests_per_second: 5
